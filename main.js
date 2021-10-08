@@ -35,16 +35,13 @@ window.addEventListener('load', function window_onLoad() {
     pitch, yaw, roll,
     timestamp
   }) => {
-    cameraXLabel.textContent = Math.floor(x);
-    cameraYLabel.textContent = Math.floor(y);
-    cameraZLabel.textContent = Math.floor(z);
-    cameraPitchLabel.textContent = Math.floor(pitch);
-    cameraYawLabel.textContent = Math.floor(yaw);
-    cameraRollLabel.textContent = Math.floor(roll);
-    const hours = Math.floor(timestamp / 3600 / 1000);
-    const minutes = Math.floor((timestamp / 60 / 1000) % 60);
-    const seconds = Math.floor((timestamp / 1000) % 60);
-    timeLabel.textContent = `${hours}:${minutes}:${seconds}`;
+    cameraXLabel.textContent = x.toFixed(1);
+    cameraYLabel.textContent = y.toFixed(1);
+    cameraZLabel.textContent = z.toFixed(1);
+    cameraPitchLabel.textContent = pitch.toFixed(1);
+    cameraYawLabel.textContent = yaw.toFixed(1);
+    cameraRollLabel.textContent = roll.toFixed(1);
+    timeLabel.textContent = timestampToHHMMSS(timestamp);
   };
   app.run();
 });
