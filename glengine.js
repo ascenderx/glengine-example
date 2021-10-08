@@ -103,9 +103,9 @@ class GLEngine {
     for (let entity of entities) {
       const modelMatrix = mat4.create();
       mat4.translate(
-        modelMatrix, // destination
-        modelMatrix, // source
-        entity.position // translation
+        modelMatrix,
+        modelMatrix,
+        entity.position
       );
       // The camera's position is stored as the additive inverse (negative)
       // of its logical position, so we'll simply add it here, which is
@@ -115,7 +115,24 @@ class GLEngine {
         modelMatrix,
         camera.position
       );
-
+      mat4.rotate(
+        modelMatrix,
+        modelMatrix,
+        entity.rotation[0],
+        AXIS_X
+      );
+      mat4.rotate(
+        modelMatrix,
+        modelMatrix,
+        entity.rotation[1],
+        AXIS_Y
+      );
+      mat4.rotate(
+        modelMatrix,
+        modelMatrix,
+        entity.rotation[2],
+        AXIS_Z
+      );
       const normalMatrix = mat4.create();
       mat4.invert(normalMatrix, modelMatrix);
       mat4.transpose(normalMatrix, normalMatrix);
