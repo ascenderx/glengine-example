@@ -51,6 +51,7 @@ class GLEngine {
     this._entities.push({
       position: position,
       rotation: rotation,
+      vertexCount: indices.length,
       vertexBuffer: this._initializeBuffer(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW),
       normalBuffer: this._initializeBuffer(gl.ARRAY_BUFFER, new Float32Array(normals), gl.STATIC_DRAW),
       indexBuffer: this._initializeBuffer(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW),
@@ -186,7 +187,7 @@ class GLEngine {
 
       gl.drawElements(
         gl.TRIANGLES,
-        36, // vertex count
+        entity.vertexCount,
         gl.UNSIGNED_SHORT, // type
         0 // offset
       );
