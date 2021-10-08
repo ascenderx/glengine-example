@@ -2,10 +2,30 @@ class Application {
   constructor(canvas) {
     this._width = canvas.width;
     this._height = canvas.height;
-    this._cube = new Cube();
     this._camera = new Camera();
     let gl = GLEngine.getGLFromCanvas(canvas);
-    this._gle = new GLEngine(gl, this._camera, this._cube);
+    this._gle = new GLEngine(gl, this._camera);
+    
+    this._entities = [];
+    for (let x = 0; x < 100; x++) {
+      let cube = new Cube({
+        x: randomInteger(-100, 100),
+        y: randomInteger(-100, 100),
+        z: randomInteger(-100, 100),
+        yaw: randomInteger(0, 180),
+        pitch: randomInteger(0, 180),
+        roll: randomInteger(0, 180),
+      });
+      this._entities.push(cube);
+      this._gle.pushEntity({
+        position: cube.position,
+        rotation: cube.rotation,
+        vertices: Cube.VERTICES,
+        normals: Cube.NORMALS,
+        indices: Cube.INDICES,
+      });
+    }
+    
     this._interval = 10;
     this._actions = {
       strafeLeft: false,

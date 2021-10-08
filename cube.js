@@ -1,19 +1,67 @@
 class Cube {
-  constructor() {
-    this.position = [
-      0, // x
-      0, // y
-      -5, // z
-    ],
-    this.rotation = {
-      x: 30,
-      y: 30,
-      z: 30,
-    };
+  constructor({
+    x = 0,
+    y = 0,
+    z = 0,
+    pitch = 0,
+    yaw = 0,
+    roll = 0,
+  }) {
+    this.position = [x, y, z];
+    this.rotation = [pitch, yaw, roll];
   }
+
+  get x() {
+    return this.position[0];
+  }
+
+  set x(value) {
+    this.position[0] = value;
+  }
+
+  get y() {
+    return this.position[1];
+  }
+
+  set y(value) {
+    this.position[1] = value;
+  }
+
+  get z() {
+    return this.position[2];
+  }
+
+  set z(value) {
+    this.position[2] = value;
+  }
+
+  get pitchValue() {
+    return this.rotation[0];
+  }
+
+  set pitchValue(value) {
+    this.rotation[0] = value;
+  }
+
+  get yawValue() {
+    return this.rotation[1];
+  }
+
+  set yawValue(value) {
+    this.rotation[1] = value;
+  }
+
+  get rollValue() {
+    return this.rotation[2];
+  }
+
+  set rollValue(value) {
+    this.rotation[2] = value;
+  }
+ 
 }
 
-Cube.POSITIONS = [
+Cube.VERTICES = [
   // Front face
   -1.0, -1.0,  1.0,
    1.0, -1.0,  1.0,

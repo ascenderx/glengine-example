@@ -1,3 +1,7 @@
+const AXIS_X = [1, 0, 0];
+const AXIS_Y = [0, 1, 0];
+const AXIS_Z = [0, 0, 1];
+
 class GLEngine {
   static getGLFromCanvas(canvas) {
     let gl = null;
@@ -11,10 +15,9 @@ class GLEngine {
     throw 'Unable to get WebGL context';
   }
 
-  constructor(gl, camera, cube) {
+  constructor(gl, camera) {
     this._gl = gl;
     this._camera = camera;
-    this._cube = cube;
     
     this._programs = {
       main: this._initializeProgram(mainVertexSource, mainFragmentSource),
@@ -40,22 +43,26 @@ class GLEngine {
       },
     };
 
-    this._buffers = {
-      cube: {
-        position: this._initializeBuffer(gl.ARRAY_BUFFER, new Float32Array(Cube.POSITIONS), gl.STATIC_DRAW),
-        normal: this._initializeBuffer(gl.ARRAY_BUFFER, new Float32Array(Cube.NORMALS), gl.STATIC_DRAW),
-        index: this._initializeBuffer(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(Cube.INDICES), gl.STATIC_DRAW),
-      },
-    };
+    this._entities = [];
+  }
+
+  pushEntity({position, rotation, vertices, normals, indices}) {
+    const gl = this._gl;
+    this._entities.push({
+      position: position,
+      rotation: rotation,
+      vertexBuffer: this._initializeBuffer(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW),
+      normalBuffer: this._initializeBuffer(gl.ARRAY_BUFFER, new Float32Array(normals), gl.STATIC_DRAW),
+      indexBuffer: this._initializeBuffer(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW),
+    });
   }
 
   render() {
     const gl = this._gl;
     const camera = this._camera;
-    const cube = this._cube;
     const programs = this._programs;
     const locations = this._locations;
-    const buffers = this._buffers;
+    const entities = this._entities;
 
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clearDepth(1.0);
@@ -73,95 +80,100 @@ class GLEngine {
       100.0 // Z far
     );
 
-    const modelMatrix = mat4.create();
-    mat4.translate(
-      modelMatrix, // destination
-      modelMatrix, // source
-      cube.position // translation
-    );
-    mat4.translate(
-      modelMatrix,
-      modelMatrix,
-      [-camera.x, -camera.y, -camera.z]
-    );
-
     const viewMatrix = mat4.create();
     mat4.rotate(
       viewMatrix,
       viewMatrix,
       camera.pitchValue * RADIANS,
-      [1, 0, 0]
+      AXIS_X
     );
     mat4.rotate(
       viewMatrix,
       viewMatrix,
       camera.yawValue * RADIANS,
-      [0, 1, 0]
+      AXIS_Y
     );
     mat4.rotate(
       viewMatrix,
       viewMatrix,
       camera.rollValue * RADIANS,
-      [0, 0, 1]
+      AXIS_Z
     );
 
-    const normalMatrix = mat4.create();
-    mat4.invert(normalMatrix, modelMatrix);
-    mat4.transpose(normalMatrix, normalMatrix);
+    for (let entity of entities) {
+      const modelMatrix = mat4.create();
+      mat4.translate(
+        modelMatrix, // destination
+        modelMatrix, // source
+        entity.position // translation
+      );
+      // The camera's position is stored as the additive inverse (negative)
+      // of its logical position, so we'll simply add it here, which is
+      // the same as subtracting its logical position.
+      mat4.translate(
+        modelMatrix,
+        modelMatrix,
+        camera.position
+      );
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.cube.position);
-    gl.vertexAttribPointer(
-      locations.main.attributes.aPosition,
-      3, // number of components
-      gl.FLOAT, // type
-      false, // normalize
-      0, // stride
-      0 // offset
-    );
-    gl.enableVertexAttribArray(locations.main.attributes.aPosition);
+      const normalMatrix = mat4.create();
+      mat4.invert(normalMatrix, modelMatrix);
+      mat4.transpose(normalMatrix, normalMatrix);
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.cube.normal);
-    gl.vertexAttribPointer(
-      locations.main.attributes.aNormal,
-      3, // number of components
-      gl.FLOAT, // type
-      false, // normalize
-      0, // stride
-      0, // offset
-    );
-    gl.enableVertexAttribArray(locations.main.attributes.aNormal);
+      gl.bindBuffer(gl.ARRAY_BUFFER, entity.vertexBuffer);
+      gl.vertexAttribPointer(
+        locations.main.attributes.aPosition,
+        3, // number of components
+        gl.FLOAT, // type
+        false, // normalize
+        0, // stride
+        0 // offset
+      );
+      gl.enableVertexAttribArray(locations.main.attributes.aPosition);
 
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.cube.index);
+      gl.bindBuffer(gl.ARRAY_BUFFER, entity.normalBuffer);
+      gl.vertexAttribPointer(
+        locations.main.attributes.aNormal,
+        3, // number of components
+        gl.FLOAT, // type
+        false, // normalize
+        0, // stride
+        0, // offset
+      );
+      gl.enableVertexAttribArray(locations.main.attributes.aNormal);
 
-    gl.useProgram(programs.main);
+      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, entity.indexBuffer);
 
-    gl.uniformMatrix4fv(
-      locations.main.uniforms.uProjection,
-      false,
-      projectionMatrix
-    );
-    gl.uniformMatrix4fv(
-      locations.main.uniforms.uModel,
-      false,
-      modelMatrix
-    );
-    gl.uniformMatrix4fv(
-      locations.main.uniforms.uView,
-      false,
-      viewMatrix
-    );
-    gl.uniformMatrix4fv(
-      locations.main.uniforms.uNormal,
-      false,
-      normalMatrix
-    );
+      gl.useProgram(programs.main);
 
-    gl.drawElements(
-      gl.TRIANGLES,
-      36, // vertex count
-      gl.UNSIGNED_SHORT, // type
-      0 // offset
-    );
+      gl.uniformMatrix4fv(
+        locations.main.uniforms.uProjection,
+        false,
+        projectionMatrix
+      );
+      gl.uniformMatrix4fv(
+        locations.main.uniforms.uModel,
+        false,
+        modelMatrix
+      );
+      gl.uniformMatrix4fv(
+        locations.main.uniforms.uView,
+        false,
+        viewMatrix
+      );
+      gl.uniformMatrix4fv(
+        locations.main.uniforms.uNormal,
+        false,
+        normalMatrix
+      );
+
+      gl.drawElements(
+        gl.TRIANGLES,
+        36, // vertex count
+        gl.UNSIGNED_SHORT, // type
+        0 // offset
+      );
+    }
   }
 
   _initializeProgram(vertexSource, fragmentSource) {

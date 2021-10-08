@@ -1,25 +1,71 @@
 class Camera {
   constructor() {
-    this.x = 0;
-    this.y = 0;
-    this.z = 0;
-    this.pitchValue = 0;
-    this.yawValue = 0;
-    this.rollValue = 0;
+    // The position is stored as the additive inverse (negative) of the
+    // logical/actual position to facilitate translation in the GL engine.
+    this.position = [0, 0, 0];
+    this.rotation = [0, 0, 0];
+  }
+
+  get x() {
+    return -this.position[0];
+  }
+
+  set x(value) {
+    this.position[0] = -value;
+  }
+
+  get y() {
+    return -this.position[1];
+  }
+
+  set y(value) {
+    this.position[1] = -value;
+  }
+
+  get z() {
+    return -this.position[2];
+  }
+
+  set z(value) {
+    this.position[2] = -value;
+  }
+
+  get pitchValue() {
+    return this.rotation[0];
+  }
+
+  set pitchValue(value) {
+    this.rotation[0] = value;
+  }
+
+  get yawValue() {
+    return this.rotation[1];
+  }
+
+  set yawValue(value) {
+    this.rotation[1] = value;
+  }
+
+  get rollValue() {
+    return this.rotation[2];
+  }
+
+  set rollValue(value) {
+    this.rotation[2] = value;
   }
 
   strafeLR(speed) {
-    const cosA = Math.cos(this.yawValue * RADIANS);
-    const sinA = Math.sin(this.yawValue * RADIANS);
-    this.x += speed * cosA;
-    this.z += speed * sinA;
+    const cosA = Math.cos(this.rotation[1] * RADIANS);
+    const sinA = Math.sin(this.rotation[1] * RADIANS);
+    this.position[0] -= speed * cosA;
+    this.position[2] -= speed * sinA;
   }
 
   strafeFB(speed) {
-    const cosA = Math.cos(this.yawValue * RADIANS);
-    const sinA = Math.sin(this.yawValue * RADIANS);
-    this.x -= speed * sinA;
-    this.z += speed * cosA;
+    const cosA = Math.cos(this.rotation[1] * RADIANS);
+    const sinA = Math.sin(this.rotation[1] * RADIANS);
+    this.position[0] += speed * sinA;
+    this.position[2] -= speed * cosA;
   }
 
   strafeLeft(speed) {
@@ -39,23 +85,20 @@ class Camera {
   }
 
   ascend(speed) {
-    this.y += speed;
+    this.position[1] -= speed;
   }
 
   descend(speed) {
-    this.y -= speed;
+    this.position[1] += speed;
   }
 
   pitch(speed) {
-    this.pitchValue += speed;
-    if (this.pitchValue >= 90) {
-      this.pitchValue = 90;
-    } else if (this.pitchValue <= -90) {
-      this.pitchValue = -90;
+    this.rotation[0] += speed;
+    if (this.rotation[0] >= 90) {
+      this.rotation[0] = 90;
+    } else if (this.rotation[0] <= -90) {
+      this.rotation[0] = -90;
     }
-    /*if (this.pitchValue < 0) {
-      this.pitchValue += 360;
-    }*/
   }
 
   pitchUp(speed) {
@@ -67,10 +110,10 @@ class Camera {
   }
 
   yaw(speed) {
-    this.yawValue += speed;
-    this.yawValue %= 360;
-    if (this.yawValue < 0) {
-      this.yawValue += 360;
+    this.rotation[1] += speed;
+    this.rotation[1] %= 360;
+    if (this.rotation[1] < 0) {
+      this.rotation[1] += 360;
     }
   }
 
