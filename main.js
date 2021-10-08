@@ -3,6 +3,8 @@ const elementByID = document.getElementById.bind(document);
 let app;
 window.addEventListener('load', function window_onLoad() {
   const cvs = elementByID('cvs');
+  cvs.width = cvs.parentElement.clientWidth;
+  cvs.height = cvs.parentElement.clientHeight;
   app = new Application(cvs);
   
   const hud = elementByID('hud');
@@ -12,6 +14,14 @@ window.addEventListener('load', function window_onLoad() {
       cvs.requestPointerLock();
     }
   });
+
+  function cvs_onMouseMove(event) {
+    let x = event.movementX;
+    let y = event.movementY;
+    app.onMouseMove(x, y);
+  }
+
+  cvs.addEventListener('mousemove', cvs_onMouseMove);
 
   const cameraXLabel = elementByID('cameraXLabel');
   const cameraYLabel = elementByID('cameraYLabel');

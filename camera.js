@@ -3,21 +3,21 @@ class Camera {
     this.x = 0;
     this.y = 0;
     this.z = 0;
-    this.pitch = 0;
-    this.yaw = 0;
-    this.roll = 0;
+    this.pitchValue = 0;
+    this.yawValue = 0;
+    this.rollValue = 0;
   }
 
   strafeLR(speed) {
-    const cosA = Math.cos(this.yaw * RADIANS);
-    const sinA = Math.sin(this.yaw * RADIANS);
+    const cosA = Math.cos(this.yawValue * RADIANS);
+    const sinA = Math.sin(this.yawValue * RADIANS);
     this.x += speed * cosA;
     this.z += speed * sinA;
   }
 
   strafeFB(speed) {
-    const cosA = Math.cos(this.yaw * RADIANS);
-    const sinA = Math.sin(this.yaw * RADIANS);
+    const cosA = Math.cos(this.yawValue * RADIANS);
+    const sinA = Math.sin(this.yawValue * RADIANS);
     this.x -= speed * sinA;
     this.z += speed * cosA;
   }
@@ -46,36 +46,40 @@ class Camera {
     this.y -= speed;
   }
 
-  pitchUp(speed) {
-    this.pitch -= speed;
-    this.pitch %= 360;
-    if (this.pitch < 0) {
-      this.pitch += 360;
+  pitch(speed) {
+    this.pitchValue += speed;
+    if (this.pitchValue >= 90) {
+      this.pitchValue = 90;
+    } else if (this.pitchValue <= -90) {
+      this.pitchValue = -90;
     }
+    /*if (this.pitchValue < 0) {
+      this.pitchValue += 360;
+    }*/
+  }
+
+  pitchUp(speed) {
+    this.pitch(-speed);
   }
 
   pitchDown(speed) {
-    this.pitch += speed;
-    this.pitch %= 360;
-    if (this.pitch < 0) {
-      this.pitch += 360;
+    this.pitch(speed);
+  }
+
+  yaw(speed) {
+    this.yawValue += speed;
+    this.yawValue %= 360;
+    if (this.yawValue < 0) {
+      this.yawValue += 360;
     }
   }
 
   yawLeft(speed) {
-    this.yaw -= speed;
-    this.yaw %= 360;
-    if (this.yaw < 0) {
-      this.yaw += 360;
-    }
+    this.yaw(-speed);
   }
 
   yawRight(speed) {
-    this.yaw += speed;
-    this.yaw %= 360;
-    if (this.yaw < 0) {
-      this.yaw += 360;
-    }
+    this.yaw(speed);
   }
 }
 

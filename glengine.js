@@ -2,7 +2,8 @@ class GLEngine {
   static getGLFromCanvas(canvas) {
     let gl = null;
     for (const type of ['webgl', 'webgl-experimental']) {
-      gl = canvas.getContext(type, {antialias: false});
+      gl = canvas.getContext(type, {antialias: true});
+      gl.viewport(0, 0, canvas.width, canvas.height);
       if (gl !== null) {
         return gl;
       }
@@ -81,30 +82,26 @@ class GLEngine {
     mat4.translate(
       modelMatrix,
       modelMatrix,
-      [
-        -Math.floor(camera.x),
-        -Math.floor(camera.y),
-        -Math.floor(camera.z)
-      ]
+      [-camera.x, -camera.y, -camera.z]
     );
 
     const viewMatrix = mat4.create();
     mat4.rotate(
       viewMatrix,
       viewMatrix,
-      Math.floor(camera.pitch) * RADIANS,
+      camera.pitchValue * RADIANS,
       [1, 0, 0]
     );
     mat4.rotate(
       viewMatrix,
       viewMatrix,
-      Math.floor(camera.yaw) * RADIANS,
+      camera.yawValue * RADIANS,
       [0, 1, 0]
     );
     mat4.rotate(
       viewMatrix,
       viewMatrix,
-      Math.floor(camera.roll) * RADIANS,
+      camera.rollValue * RADIANS,
       [0, 0, 1]
     );
 

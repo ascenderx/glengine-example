@@ -32,19 +32,29 @@ class Application {
     loopInterval(this.loop_onTick.bind(this), this._interval);
   }
 
+  onMouseMove(x, y) {
+    const camera = this._camera;
+    camera.yawRight(x / this._interval);
+    camera.pitchDown(y / this._interval);
+  }
+
   onKeyEvent(key, pressed) {
     const actions = this._actions;
     switch (key) {
       case 'a':
+      case 'ArrowLeft':
         actions.strafeLeft = pressed;
         break;
       case 'd':
+      case 'ArrowRight':
         actions.strafeRight = pressed;
         break;
       case 's':
+      case 'ArrowDown':
         actions.walkBackward = pressed;
         break;
       case 'w':
+      case 'ArrowUp':
         actions.walkForward = pressed;
         break;
       case ' ':
@@ -53,18 +63,6 @@ class Application {
         break;
       case 'Shift':
         actions.descend = pressed;
-        break;
-      case 'ArrowLeft':
-        actions.yawLeft = pressed;
-        break;
-      case 'ArrowRight':
-        actions.yawRight = pressed;
-        break;
-      case 'ArrowUp':
-        actions.pitchUp = pressed;
-        break;
-      case 'ArrowDown':
-        actions.pitchDown = pressed;
         break;
     }
   }
@@ -116,9 +114,9 @@ class Application {
       x: camera.x,
       y: camera.y,
       z: camera.z,
-      pitch: camera.pitch,
-      yaw: camera.yaw,
-      roll: camera.roll,
+      pitch: camera.pitchValue,
+      yaw: camera.yawValue,
+      roll: camera.rollValue,
       timestamp: timestamp,
     });
   }
