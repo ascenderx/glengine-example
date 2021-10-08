@@ -5,6 +5,14 @@ window.addEventListener('load', function window_onLoad() {
   const cvs = elementByID('cvs');
   app = new Application(cvs);
   
+  const hud = elementByID('hud');
+  hud.addEventListener('click', (event) => {
+    event.preventDefault();
+    if (document.pointerLockElement !== cvs) {
+      cvs.requestPointerLock();
+    }
+  });
+
   const cameraXLabel = elementByID('cameraXLabel');
   const cameraYLabel = elementByID('cameraYLabel');
   const cameraZLabel = elementByID('cameraZLabel');
