@@ -77,7 +77,7 @@ class GLEngine {
       45 * Math.PI / 180, // field of view (radians)
       gl.canvas.clientWidth / gl.canvas.clientHeight, // aspect ratio
       0.1, // Z near
-      100.0 // Z far
+      1000.0 // Z far
     );
 
     const viewMatrix = mat4.create();
