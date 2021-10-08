@@ -1,5 +1,5 @@
 class GLEngine {
-  static GetGLFromCanvas(canvas) {
+  static getGLFromCanvas(canvas) {
     let gl = null;
     for (const type of ['webgl', 'webgl-experimental']) {
       gl = canvas.getContext(type, {antialias: false});
@@ -10,8 +10,9 @@ class GLEngine {
     throw 'Unable to get WebGL context';
   }
 
-  constructor(gl, cube) {
+  constructor(gl, camera, cube) {
     this._gl = gl;
+    this._camera = camera;
     this._cube = cube;
     
     this._programs = {
@@ -31,7 +32,8 @@ class GLEngine {
           'uTime',
           'uNormal',
           'uResolution',
-          'uModelView',
+          'uModel',
+          'uView',
           'uProjection',
         ),
       },
@@ -48,6 +50,7 @@ class GLEngine {
 
   render() {
     const gl = this._gl;
+    const camera = this._camera;
     const cube = this._cube;
     const programs = this._programs;
     const locations = this._locations;
@@ -69,33 +72,44 @@ class GLEngine {
       100.0 // Z far
     );
 
-    const modelViewMatrix = mat4.create();
+    const modelMatrix = mat4.create();
     mat4.translate(
-      modelViewMatrix, // destination
-      modelViewMatrix, // source
-      [0.0, 0.0, -6.0] // translation
+      modelMatrix, // destination
+      modelMatrix, // source
+      cube.position // translation
+    );
+    mat4.translate(
+      modelMatrix,
+      modelMatrix,
+      [
+        -Math.floor(camera.x),
+        -Math.floor(camera.y),
+        -Math.floor(camera.z)
+      ]
+    );
+
+    const viewMatrix = mat4.create();
+    mat4.rotate(
+      viewMatrix,
+      viewMatrix,
+      Math.floor(camera.pitch) * RADIANS,
+      [1, 0, 0]
     );
     mat4.rotate(
-      modelViewMatrix, // destination
-      modelViewMatrix, // source
-      cube.rotation.z * Math.PI / 180, // rotation (radians)
-      [0, 0, 1] // axis (Z)
+      viewMatrix,
+      viewMatrix,
+      Math.floor(camera.yaw) * RADIANS,
+      [0, 1, 0]
     );
     mat4.rotate(
-      modelViewMatrix, // destination
-      modelViewMatrix, // source
-      cube.rotation.y * Math.PI / 180, // rotation (radians)
-      [0, 1, 0] // axis (Y)
-    );
-    mat4.rotate(
-      modelViewMatrix, // destination
-      modelViewMatrix, // source
-      cube.rotation.x * Math.PI / 180, // rotation (radians)
-      [1, 0, 0] // axis (X)
+      viewMatrix,
+      viewMatrix,
+      Math.floor(camera.roll) * RADIANS,
+      [0, 0, 1]
     );
 
     const normalMatrix = mat4.create();
-    mat4.invert(normalMatrix, modelViewMatrix);
+    mat4.invert(normalMatrix, modelMatrix);
     mat4.transpose(normalMatrix, normalMatrix);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, buffers.cube.position);
@@ -130,9 +144,14 @@ class GLEngine {
       projectionMatrix
     );
     gl.uniformMatrix4fv(
-      locations.main.uniforms.uModelView,
+      locations.main.uniforms.uModel,
       false,
-      modelViewMatrix
+      modelMatrix
+    );
+    gl.uniformMatrix4fv(
+      locations.main.uniforms.uView,
+      false,
+      viewMatrix
     );
     gl.uniformMatrix4fv(
       locations.main.uniforms.uNormal,

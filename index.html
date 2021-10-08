@@ -9,6 +9,8 @@
       integrity="sha512-zhHQR0/H5SEBL3Wn6yYSaTTZej12z0hVZKOv3TwCUXT1z5qeqGcXJLLrbERYRScEDDpYIJhPC1fk31gqR783iQ=="
       crossorigin="anonymous" defer>
     </script>
+    <script src="math.js" defer></script>
+    <script src="camera.js" defer></script>
     <script src="cube.js" defer></script>
     <script src="shaders-main.js" defer></script>
     <script src="glengine.js" defer></script>
@@ -17,9 +19,36 @@
     <script src="main.js" defer></script>
   </head>
   <body>
-    <canvas id="cvs" width="100" height="100">
-      Your browser does not support the HTML5 Canvas API.
-    </canvas>
+    <div class="drawing-space">
+      <canvas id="cvs" width="100" height="100">
+        Your browser does not support the HTML5 Canvas API.
+      </canvas>
+    </div>
+    <div class="hud">
+      <table>
+        <tr>
+          <td>Camera X:</td><td><label id="cameraXLabel"></label></td>
+        </tr>
+        <tr>
+          <td>Camera Y:</td><td><label id="cameraYLabel"></label></td>
+        </tr>
+        <tr>
+          <td>Camera Z:</td><td><label id="cameraZLabel"></label></td>
+        </tr>
+        <tr>
+          <td>Camera Pitch:</td><td><label id="cameraPitchLabel"></label>&deg;</td>
+        </tr>
+        <tr>
+          <td>Camera Yaw:</td><td><label id="cameraYawLabel"></label>&deg;</td>
+        </tr>
+        <tr>
+          <td>Camera Roll:</td><td><label id="cameraRollLabel"></label>&deg;</td>
+        </tr>
+        <tr>
+          <td>Elapsed Time:</td><td><label id="timeLabel"></label></td>
+        </tr>
+      </table>
+    </div>
   </body>
 </html>
 

@@ -1,5 +1,10 @@
 class Cube {
   constructor() {
+    this.position = [
+      0, // x
+      0, // y
+      -5, // z
+    ],
     this.rotation = {
       x: 30,
       y: 30,
