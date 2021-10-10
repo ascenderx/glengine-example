@@ -4,6 +4,8 @@ function window_onLoad() {
   const cvs = elementByID('cvs');
   const app = new Application(cvs);
   const hud = elementByID('hud');
+  const canvasWidthLabel = elementByID('canvasWidthLabel');
+  const canvasHeightLabel = elementByID('canvasHeightLabel');
   const cameraXLabel = elementByID('cameraXLabel');
   const cameraYLabel = elementByID('cameraYLabel');
   const cameraZLabel = elementByID('cameraZLabel');
@@ -16,6 +18,8 @@ function window_onLoad() {
     cvs.width = cvs.parentElement.clientWidth;
     cvs.height = cvs.parentElement.clientHeight;
     app.onResize(cvs.width, cvs.height);
+    canvasWidthLabel.textContent = cvs.width;
+    canvasHeightLabel.textContent = cvs.height;
   }
 
   function window_onKeyDown({key,}) {
