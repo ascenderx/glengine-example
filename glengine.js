@@ -7,7 +7,6 @@ class GLEngine {
     let gl = null;
     for (const type of ['webgl', 'webgl-experimental']) {
       gl = canvas.getContext(type, {antialias: true});
-      gl.viewport(0, 0, canvas.width, canvas.height);
       if (gl !== null) {
         return gl;
       }
@@ -53,6 +52,10 @@ class GLEngine {
       normalBuffer: this._initializeBuffer(gl.ARRAY_BUFFER, new Float32Array(normals), gl.STATIC_DRAW),
       indexBuffer: this._initializeBuffer(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW),
     });
+  }
+
+  resize(width, height) {
+    this._gl.viewport(0, 0, width, height);
   }
 
   render() {

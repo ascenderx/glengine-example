@@ -1,28 +1,9 @@
 const elementByID = document.getElementById.bind(document);
 
-let app;
-window.addEventListener('load', function window_onLoad() {
+function window_onLoad() {
   const cvs = elementByID('cvs');
-  cvs.width = cvs.parentElement.clientWidth;
-  cvs.height = cvs.parentElement.clientHeight;
-  app = new Application(cvs);
-  
+  const app = new Application(cvs);
   const hud = elementByID('hud');
-  hud.addEventListener('click', (event) => {
-    event.preventDefault();
-    if (document.pointerLockElement !== cvs) {
-      cvs.requestPointerLock();
-    }
-  });
-
-  function cvs_onMouseMove(event) {
-    let x = event.movementX;
-    let y = event.movementY;
-    app.onMouseMove(x, y);
-  }
-
-  cvs.addEventListener('mousemove', cvs_onMouseMove);
-
   const cameraXLabel = elementByID('cameraXLabel');
   const cameraYLabel = elementByID('cameraYLabel');
   const cameraZLabel = elementByID('cameraZLabel');
@@ -30,11 +11,39 @@ window.addEventListener('load', function window_onLoad() {
   const cameraYawLabel = elementByID('cameraYawLabel');
   const cameraRollLabel = elementByID('cameraRollLabel');
   const timeLabel = elementByID('timeLabel');
-  app.onUpdate = ({
+  
+  function window_onResize() {
+    cvs.width = cvs.parentElement.clientWidth;
+    cvs.height = cvs.parentElement.clientHeight;
+    app.onResize(cvs.width, cvs.height);
+  }
+
+  function window_onKeyDown({key}) {
+    app.onKeyDown(key);
+  }
+
+  function window_onKeyUp({key}) {
+    app.onKeyUp(key);
+  }
+
+  function cvs_onMouseMove({movementX, movementY}) {
+    let x = movementX;
+    let y = movementY;
+    app.onMouseMove(x, y);
+  }
+
+  function hud_onClick(event) {
+    event.preventDefault();
+    if (document.pointerLockElement !== cvs) {
+      cvs.requestPointerLock();
+    }
+  }
+
+  function app_onUpdate({
     x, y, z,
     pitch, yaw, roll,
-    timestamp
-  }) => {
+    timestamp,
+  }) {
     cameraXLabel.textContent = x.toFixed(1);
     cameraYLabel.textContent = y.toFixed(1);
     cameraZLabel.textContent = z.toFixed(1);
@@ -42,15 +51,18 @@ window.addEventListener('load', function window_onLoad() {
     cameraYawLabel.textContent = yaw.toFixed(1);
     cameraRollLabel.textContent = roll.toFixed(1);
     timeLabel.textContent = timestampToHHMMSS(timestamp);
-  };
+  }
+
+  window.addEventListener('resize', window_onResize);
+  window.addEventListener('keydown', window_onKeyDown);
+  window.addEventListener('keyup', window_onKeyUp);
+  cvs.addEventListener('mousemove', cvs_onMouseMove);
+  hud.addEventListener('click', hud_onClick);
+  app.onUpdate = app_onUpdate;
+
+  window_onResize();
   app.run();
-});
+}
 
-window.addEventListener('keydown', function window_onKeyDown(event) {
-  app.onKeyDown(event.key);
-});
-
-window.addEventListener('keyup', function window_onKeyUp(event) {
-  app.onKeyUp(event.key);
-});
+window.addEventListener('load', window_onLoad);
 

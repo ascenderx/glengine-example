@@ -1,10 +1,9 @@
 class Application {
   constructor(canvas) {
-    this._width = canvas.width;
-    this._height = canvas.height;
     this._camera = new Camera();
     let gl = GLEngine.getGLFromCanvas(canvas);
     this._gle = new GLEngine(gl, this._camera);
+    this.onResize(canvas.width, canvas.height);
     
     this._entities = [];
     for (let x = 0; x < 100; x++) {
@@ -50,6 +49,10 @@ class Application {
 
   run() {
     loopInterval(this.loop_onTick.bind(this), this._interval);
+  }
+
+  onResize(width, height) {
+    this._gle.resize(width, height);
   }
 
   onMouseMove(x, y) {
