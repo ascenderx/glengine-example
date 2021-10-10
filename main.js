@@ -11,22 +11,22 @@ function window_onLoad() {
   const cameraYawLabel = elementByID('cameraYawLabel');
   const cameraRollLabel = elementByID('cameraRollLabel');
   const timeLabel = elementByID('timeLabel');
-  
+
   function window_onResize() {
     cvs.width = cvs.parentElement.clientWidth;
     cvs.height = cvs.parentElement.clientHeight;
     app.onResize(cvs.width, cvs.height);
   }
 
-  function window_onKeyDown({key}) {
+  function window_onKeyDown({key,}) {
     app.onKeyDown(key);
   }
 
-  function window_onKeyUp({key}) {
+  function window_onKeyUp({key,}) {
     app.onKeyUp(key);
   }
 
-  function cvs_onMouseMove({movementX, movementY}) {
+  function cvs_onMouseMove({movementX, movementY,}) {
     let x = movementX;
     let y = movementY;
     app.onMouseMove(x, y);
