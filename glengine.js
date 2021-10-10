@@ -32,10 +32,7 @@ class GLEngine {
         ),
         uniforms: this._getUniformLocations(
           this._programs.main,
-          'uMouse',
-          'uTime',
           'uNormal',
-          'uResolution',
           'uModel',
           'uView',
           'uProjection',
