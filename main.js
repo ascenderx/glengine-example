@@ -47,19 +47,30 @@ function window_onLoad() {
   }
 
   function hud_onClick(event) {
-    event.preventDefault();
     if (document.pointerLockElement !== cvs) {
       cvs.requestPointerLock();
     }
   }
 
   function app_onUpdate(timestamp) {
-    lightAmbientRedLabel.textContent = Math.floor(app.light.ambient[0] * 256);
-    lightAmbientGreenLabel.textContent = Math.floor(app.light.ambient[1] * 256);
-    lightAmbientBlueLabel.textContent = Math.floor(app.light.ambient[2] * 256);
-    lightRedLabel.textContent = Math.floor(app.light.color[0] * 256);
-    lightGreenLabel.textContent = Math.floor(app.light.color[1] * 256);
-    lightBlueLabel.textContent = Math.floor(app.light.color[2] * 256);
+    lightAmbientRedLabel.textContent = Math.floor(app.light.ambient[0] * 0xff)
+      .toString(16)
+      .padStart(2, '0');
+    lightAmbientGreenLabel.textContent = Math.floor(app.light.ambient[1] * 0xff)
+      .toString(16)
+      .padStart(2, '0');
+    lightAmbientBlueLabel.textContent = Math.floor(app.light.ambient[2] * 0xff)
+      .toString(16)
+      .padStart(2, '0');
+    lightRedLabel.textContent = Math.floor(app.light.color[0] * 0xff)
+      .toString(16)
+      .padStart(2, '0');
+    lightGreenLabel.textContent = Math.floor(app.light.color[1] * 0xff)
+      .toString(16)
+      .padStart(2, '0');
+    lightBlueLabel.textContent = Math.floor(app.light.color[2] * 0xff)
+      .toString(16)
+      .padStart(2, '0');
     lightXLabel.textContent = app.light.direction[0].toFixed(2);
     lightYLabel.textContent = app.light.direction[1].toFixed(2);
     lightZLabel.textContent = app.light.direction[2].toFixed(2);

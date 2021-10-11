@@ -44,7 +44,34 @@ canvas {
   height: 100%;
 }
 
+.hud table {
+  border-collapse: collapse;
+  background-color: rgba(0, 0, 0, 80%);
+}
+
 .hud td {
   min-width: 4em;
+  border-bottom: 1px solid #555555;
+}
+
+.hud td.blank {
+  border-bottom: none;
+}
+
+.hud th {
+  text-align: left;
+  border-bottom: 2px solid #999999;
+}
+
+.hud .colorHeaderRow th:nth-child(2) {
+  color: #ff0000;
+}
+
+.hud .colorHeaderRow th:nth-child(3) {
+  color: #00ff00;
+}
+
+.hud .colorHeaderRow th:nth-child(4) {
+  color: #0000ff;
 }
 
