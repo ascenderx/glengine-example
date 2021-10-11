@@ -3,6 +3,7 @@ const elementByID = document.getElementById.bind(document);
 function window_onLoad() {
   const cvs = elementByID('cvs');
   const app = new Application(cvs);
+  // TODO: Make dedicated HeadsUpDisplay class.
   const hud = elementByID('hud');
   const canvasWidthLabel = elementByID('canvasWidthLabel');
   const canvasHeightLabel = elementByID('canvasHeightLabel');
