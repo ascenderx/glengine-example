@@ -11,6 +11,7 @@ class Application {
     this._gle = new GLEngine(gl, this.light, this.camera);
     this.onResize(canvas.width, canvas.height);
     
+    this._interval = 10;
     this._entities = [];
     for (let x = 0; x < 100; x++) {
       const cube = new Cube({
@@ -20,6 +21,9 @@ class Application {
         yaw: randomInteger(0, 180),
         pitch: randomInteger(0, 180),
         roll: randomInteger(0, 180),
+        yawSpeed: randomInteger(-2, 2) / this._interval / 10,
+        pitchSpeed: randomInteger(-2, 2) / this._interval / 10,
+        rollSpeed: randomInteger(-2, 2) / this._interval / 10,
       });
       this._entities.push(cube);
       this._gle.pushEntity({
@@ -31,7 +35,6 @@ class Application {
       });
     }
     
-    this._interval = 10;
     this._actions = {
       strafeLeft: false,
       strafeRight: false,
@@ -119,6 +122,12 @@ class Application {
     const light = this.light;
     const camera = this.camera;
     const actions = this._actions;
+    const entities = this._entities;
+
+    for (const entity of entities) {
+      entity.update();
+    }
+
     if (actions.strafeLeft) {
       camera.strafeLeft(speeds.strafe);
     } else if (actions.strafeRight) {

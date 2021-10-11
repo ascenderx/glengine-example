@@ -6,9 +6,19 @@ class Cube {
     pitch = 0,
     yaw = 0,
     roll = 0,
+    pitchSpeed = 0,
+    yawSpeed = 0,
+    rollSpeed = 0,
   }) {
     this.position = [x, y, z];
     this.rotation = [pitch, yaw, roll];
+    this.rotationSpeed = [pitchSpeed, yawSpeed, rollSpeed];
+  }
+
+  update() {
+    this.rotation[0] += this.rotationSpeed[0];
+    this.rotation[1] += this.rotationSpeed[1];
+    this.rotation[2] += this.rotationSpeed[2];
   }
 
   get x() {
