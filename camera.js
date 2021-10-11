@@ -124,5 +124,22 @@ class Camera {
   yawRight(speed) {
     this.yaw(speed);
   }
+
+  roll(speed) {
+    this.rotation[2] += speed;
+    if (this.rotation[2] >= 90) {
+      this.rotation[2] = 90;
+    } else if (this.rotation[2] <= -90) {
+      this.rotation[2] = -90;
+    }
+  }
+
+  rollCCW(speed) {
+    this.roll(-speed);
+  }
+
+  rollCW(speed) {
+    this.roll(speed);
+  }
 }
 
