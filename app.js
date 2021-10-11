@@ -50,7 +50,6 @@ class Application {
       strafe: 5 / this._interval,
       rotate: 10 / this._interval, // degrees
     };
-    this.onUpdate = () => {};
   }
 
   run() {
@@ -152,8 +151,6 @@ class Application {
       camera.rollCW(speeds.rotate);
     }
     */
-
-    this.onUpdate(timestamp);
   }
 
   draw() {

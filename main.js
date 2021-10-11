@@ -102,10 +102,10 @@ function window_onLoad() {
   window.addEventListener('keyup', window_onKeyUp);
   cvs.addEventListener('mousemove', cvs_onMouseMove);
   hud.addEventListener('click', hud_onClick);
-  app.onUpdate = app_onUpdate;
 
   window_onResize();
   app.run();
+  loopInterval(app_onUpdate.bind(this), 100);
 }
 
 window.addEventListener('load', window_onLoad);
