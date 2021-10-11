@@ -14,8 +14,9 @@ class GLEngine {
     throw 'Unable to get WebGL context';
   }
 
-  constructor(gl, camera) {
+  constructor(gl, light, camera) {
     this._gl = gl;
+    this._light = light;
     this._camera = camera;
     
     this._programs = {
@@ -31,6 +32,9 @@ class GLEngine {
         ),
         uniforms: this._getUniformLocations(
           this._programs.main,
+          'uAmbientLight',
+          'uLightColor',
+          'uLightDirection',
           'uNormal',
           'uModel',
           'uView',
@@ -60,6 +64,7 @@ class GLEngine {
 
   render() {
     const gl = this._gl;
+    const light = this._light;
     const camera = this._camera;
     const programs = this._programs;
     const locations = this._locations;
@@ -164,6 +169,18 @@ class GLEngine {
 
       gl.useProgram(programs.main);
 
+      gl.uniform3fv(
+        locations.main.uniforms.uAmbientLight,
+        light.ambient
+      );
+      gl.uniform3fv(
+        locations.main.uniforms.uLightColor,
+        light.color
+      );
+      gl.uniform3fv(
+        locations.main.uniforms.uLightDirection,
+        light.direction
+      );
       gl.uniformMatrix4fv(
         locations.main.uniforms.uProjection,
         false,
