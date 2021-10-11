@@ -37,9 +37,7 @@ class GLEngine {
           'uLightColor',
           'uLightDirection',
           'uNormal',
-          'uModel',
-          'uView',
-          'uProjection',
+          'uModelViewProjection',
         ),
       },
     };
@@ -140,6 +138,24 @@ class GLEngine {
         entity.rotation[2],
         AXIS_Z
       );
+
+      const mvpMatrix = mat4.create();
+      mat4.multiply(
+        mvpMatrix,
+        mvpMatrix,
+        projectionMatrix
+      );
+      mat4.multiply(
+        mvpMatrix,
+        mvpMatrix,
+        viewMatrix
+      );
+      mat4.multiply(
+        mvpMatrix,
+        mvpMatrix,
+        modelMatrix
+      );
+
       const normalMatrix = mat4.create();
       mat4.invert(normalMatrix, modelMatrix);
       mat4.transpose(normalMatrix, normalMatrix);
@@ -183,19 +199,9 @@ class GLEngine {
         light.direction
       );
       gl.uniformMatrix4fv(
-        locations.main.uniforms.uProjection,
+        locations.main.uniforms.uModelViewProjection,
         false,
-        projectionMatrix
-      );
-      gl.uniformMatrix4fv(
-        locations.main.uniforms.uModel,
-        false,
-        modelMatrix
-      );
-      gl.uniformMatrix4fv(
-        locations.main.uniforms.uView,
-        false,
-        viewMatrix
+        mvpMatrix
       );
       gl.uniformMatrix4fv(
         locations.main.uniforms.uNormal,
