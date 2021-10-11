@@ -6,6 +6,7 @@ class GLEngine {
   static getGLFromCanvas(canvas) {
     let gl = null;
     for (const type of ['webgl', 'webgl-experimental']) {
+      // Set `antialias: false` for chunky pixels.
       gl = canvas.getContext(type, {antialias: true});
       if (gl !== null) {
         return gl;

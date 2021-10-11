@@ -23,6 +23,7 @@ body {
   z-index: -2;
 }
 
+/* Use the following for chunky pixels. */
 /*
 canvas {
   width: 100%;
@@ -41,5 +42,9 @@ canvas {
   top: 0;
   width: 100%;
   height: 100%;
+}
+
+.hud td {
+  min-width: 4em;
 }
 
