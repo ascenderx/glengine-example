@@ -154,8 +154,7 @@ class Application {
   }
 
   draw() {
-    const gle = this._gle;
-    gle.render();
+    this._gle.render();
   }
 }
 
