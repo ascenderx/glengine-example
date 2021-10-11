@@ -55,8 +55,8 @@ function window_onLoad() {
   }
 
   function cvs_onMouseMove({movementX, movementY,}) {
-    let x = movementX;
-    let y = movementY;
+    const x = movementX;
+    const y = movementY;
     app.onMouseMove(x, y);
   }
 
