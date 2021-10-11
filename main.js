@@ -5,6 +5,7 @@ function window_onLoad() {
   const app = new Application(cvs);
   // TODO: Make dedicated HeadsUpDisplay class.
   const hud = elementByID('hud');
+  const infoTable = elementByID('infoTable');
   const canvasWidthLabel = elementByID('canvasWidthLabel');
   const canvasHeightLabel = elementByID('canvasHeightLabel');
   const lightAmbientRedLabel = elementByID('lightAmbientRedLabel');
@@ -24,6 +25,14 @@ function window_onLoad() {
   const cameraRollLabel = elementByID('cameraRollLabel');
   const timeLabel = elementByID('timeLabel');
 
+  const keys = {
+    i: false,
+  };
+
+  function toggleInfo() {
+    infoTable.hidden = !infoTable.hidden;
+  }
+
   function window_onResize() {
     cvs.width = cvs.parentElement.clientWidth;
     cvs.height = cvs.parentElement.clientHeight;
@@ -33,10 +42,15 @@ function window_onLoad() {
   }
 
   function window_onKeyDown({key,}) {
+    if (key === 'i' && !keys.i) {
+      keys.i = true;
+      toggleInfo();
+    }
     app.onKeyDown(key);
   }
 
   function window_onKeyUp({key,}) {
+    keys[key] = false;
     app.onKeyUp(key);
   }
 
