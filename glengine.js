@@ -107,7 +107,7 @@ class GLEngine {
       AXIS_Z
     );
 
-    for (let entity of entities) {
+    for (const entity of entities) {
       const modelMatrix = mat4.create();
       mat4.translate(
         modelMatrix,
@@ -216,7 +216,7 @@ class GLEngine {
     const gl = this._gl;
     const vertexShader = this._initializeShader(gl.VERTEX_SHADER, vertexSource);
     const fragmentShader = this._initializeShader(gl.FRAGMENT_SHADER, fragmentSource);
-    let program = gl.createProgram();
+    const program = gl.createProgram();
     gl.attachShader(program, vertexShader);
     gl.attachShader(program, fragmentShader);
     gl.linkProgram(program);

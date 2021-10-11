@@ -7,13 +7,13 @@ class Application {
       direction: [0.85, 0.8, 0.75],
     };
     this.camera = new Camera();
-    let gl = GLEngine.getGLFromCanvas(canvas);
+    const gl = GLEngine.getGLFromCanvas(canvas);
     this._gle = new GLEngine(gl, this.light, this.camera);
     this.onResize(canvas.width, canvas.height);
     
     this._entities = [];
     for (let x = 0; x < 100; x++) {
-      let cube = new Cube({
+      const cube = new Cube({
         x: randomInteger(-100, 100),
         y: randomInteger(-100, 100),
         z: randomInteger(-100, 100),
