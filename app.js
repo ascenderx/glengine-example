@@ -1,14 +1,14 @@
 class Application {
   constructor(canvas) {
     // TODO: Make this its own class.
-    this._light = {
+    this.light = {
       ambient: [0.3, 0.3, 0.3],
       color: [1, 1, 1],
       direction: [0.85, 0.8, 0.75],
     };
-    this._camera = new Camera();
+    this.camera = new Camera();
     let gl = GLEngine.getGLFromCanvas(canvas);
-    this._gle = new GLEngine(gl, this._light, this._camera);
+    this._gle = new GLEngine(gl, this.light, this.camera);
     this.onResize(canvas.width, canvas.height);
     
     this._entities = [];
@@ -50,7 +50,7 @@ class Application {
       strafe: 5 / this._interval,
       rotate: 10 / this._interval, // degrees
     };
-    this.onUpdate = ({}) => {};
+    this.onUpdate = () => {};
   }
 
   run() {
@@ -62,7 +62,7 @@ class Application {
   }
 
   onMouseMove(x, y) {
-    const camera = this._camera;
+    const camera = this.camera;
     camera.yawRight(x / this._interval);
     camera.pitchDown(y / this._interval);
   }
@@ -111,8 +111,8 @@ class Application {
 
   update(timestamp) {
     const speeds = this._speeds;
-    const light = this._light;
-    const camera = this._camera;
+    const light = this.light;
+    const camera = this.camera;
     const actions = this._actions;
     if (actions.strafeLeft) {
       camera.strafeLeft(speeds.strafe);
@@ -140,11 +140,7 @@ class Application {
       camera.pitchDown(speeds.rotate);
     }
 
-    this.onUpdate({
-      light: light,
-      camera: camera,
-      timestamp: timestamp,
-    });
+    this.onUpdate(timestamp);
   }
 
   draw() {

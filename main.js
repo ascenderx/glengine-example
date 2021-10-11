@@ -52,26 +52,22 @@ function window_onLoad() {
     }
   }
 
-  function app_onUpdate({
-    light,
-    camera,
-    timestamp,
-  }) {
-    lightAmbientRedLabel.textContent = Math.floor(light.ambient[0] * 256);
-    lightAmbientGreenLabel.textContent = Math.floor(light.ambient[1] * 256);
-    lightAmbientBlueLabel.textContent = Math.floor(light.ambient[2] * 256);
-    lightRedLabel.textContent = Math.floor(light.color[0] * 256);
-    lightGreenLabel.textContent = Math.floor(light.color[1] * 256);
-    lightBlueLabel.textContent = Math.floor(light.color[2] * 256);
-    lightXLabel.textContent = light.direction[0].toFixed(2);
-    lightYLabel.textContent = light.direction[1].toFixed(2);
-    lightZLabel.textContent = light.direction[2].toFixed(2);
-    cameraXLabel.textContent = camera.x.toFixed(1);
-    cameraYLabel.textContent = camera.y.toFixed(1);
-    cameraZLabel.textContent = camera.z.toFixed(1);
-    cameraPitchLabel.textContent = camera.pitchValue.toFixed(1);
-    cameraYawLabel.textContent = camera.yawValue.toFixed(1);
-    cameraRollLabel.textContent = camera.rollValue.toFixed(1);
+  function app_onUpdate(timestamp) {
+    lightAmbientRedLabel.textContent = Math.floor(app.light.ambient[0] * 256);
+    lightAmbientGreenLabel.textContent = Math.floor(app.light.ambient[1] * 256);
+    lightAmbientBlueLabel.textContent = Math.floor(app.light.ambient[2] * 256);
+    lightRedLabel.textContent = Math.floor(app.light.color[0] * 256);
+    lightGreenLabel.textContent = Math.floor(app.light.color[1] * 256);
+    lightBlueLabel.textContent = Math.floor(app.light.color[2] * 256);
+    lightXLabel.textContent = app.light.direction[0].toFixed(2);
+    lightYLabel.textContent = app.light.direction[1].toFixed(2);
+    lightZLabel.textContent = app.light.direction[2].toFixed(2);
+    cameraXLabel.textContent = app.camera.x.toFixed(1);
+    cameraYLabel.textContent = app.camera.y.toFixed(1);
+    cameraZLabel.textContent = app.camera.z.toFixed(1);
+    cameraPitchLabel.textContent = app.camera.pitchValue.toFixed(1);
+    cameraYawLabel.textContent = app.camera.yawValue.toFixed(1);
+    cameraRollLabel.textContent = app.camera.rollValue.toFixed(1);
     timeLabel.textContent = timestampToHHMMSS(timestamp);
   }
 
