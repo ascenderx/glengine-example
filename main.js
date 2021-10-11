@@ -26,7 +26,7 @@ function window_onLoad() {
   const timeLabel = elementByID('timeLabel');
 
   const keys = {
-    i: false,
+    i: false, // For info table in HUD
   };
 
   function toggleInfo() {
