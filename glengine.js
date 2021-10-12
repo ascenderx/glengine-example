@@ -98,12 +98,14 @@ class GLEngine {
       camera.yawValue * RADIANS,
       AXIS_Y
     );
+    /*
     mat4.rotate(
       viewMatrix,
       viewMatrix,
       camera.rollValue * RADIANS,
       AXIS_Z
     );
+    */
 
     for (const entity of entities) {
       const modelMatrix = mat4.create();

@@ -95,12 +95,6 @@ class Application {
       case 'Shift':
         actions.descend = pressed;
         break;
-      case 'z':
-        actions.rollCCW = pressed;
-        break;
-      case 'c':
-        actions.rollCW = pressed;
-        break;
     }
   }
 
@@ -153,11 +147,13 @@ class Application {
     } else if (actions.pitchDown) {
       camera.pitchDown(speeds.rotate);
     }
+    /*
     if (actions.rollCCW) {
       camera.rollCCW(speeds.rotate);
     } else if (actions.rollCW) {
       camera.rollCW(speeds.rotate);
     }
+    */
   }
 
   draw() {

@@ -1,8 +1,10 @@
 const elementByID = document.getElementById.bind(document);
 
+const objects = {};
 function window_onLoad() {
   const cvs = elementByID('cvs');
   const app = new Application(cvs);
+  objects.app = app;
   // TODO: Make dedicated HeadsUpDisplay class.
   const hud = elementByID('hud');
   const infoTable = elementByID('infoTable');
@@ -22,7 +24,7 @@ function window_onLoad() {
   const cameraZLabel = elementByID('cameraZLabel');
   const cameraPitchLabel = elementByID('cameraPitchLabel');
   const cameraYawLabel = elementByID('cameraYawLabel');
-  const cameraRollLabel = elementByID('cameraRollLabel');
+  // const cameraRollLabel = elementByID('cameraRollLabel');
   const timeLabel = elementByID('timeLabel');
 
   const keys = {
@@ -94,7 +96,7 @@ function window_onLoad() {
     cameraZLabel.textContent = app.camera.z.toFixed(1);
     cameraPitchLabel.textContent = app.camera.pitchValue.toFixed(1);
     cameraYawLabel.textContent = app.camera.yawValue.toFixed(1);
-    cameraRollLabel.textContent = app.camera.rollValue.toFixed(1);
+    // cameraRollLabel.textContent = app.camera.rollValue.toFixed(1);
     timeLabel.textContent = timestampToHHMMSS(timestamp);
   }
 
