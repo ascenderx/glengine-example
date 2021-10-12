@@ -31,6 +31,7 @@ class Application {
         rotation: cube.rotation,
         vertices: Cube.VERTICES,
         normals: Cube.NORMALS,
+        textureCoordinates: Cube.TEXTURE_COORDINATES,
         indices: Cube.INDICES,
       });
     }
@@ -147,13 +148,6 @@ class Application {
     } else if (actions.pitchDown) {
       camera.pitchDown(speeds.rotate);
     }
-    /*
-    if (actions.rollCCW) {
-      camera.rollCCW(speeds.rotate);
-    } else if (actions.rollCW) {
-      camera.rollCW(speeds.rotate);
-    }
-    */
   }
 
   draw() {
