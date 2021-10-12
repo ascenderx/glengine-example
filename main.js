@@ -45,6 +45,7 @@ function window_onLoad() {
     if (key === 'i' && !keys.i) {
       keys.i = true;
       toggleInfo();
+      return;
     }
     app.onKeyDown(key);
   }

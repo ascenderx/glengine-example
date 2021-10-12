@@ -6,6 +6,10 @@ class Camera {
     this.rotation = [0, 0, 0];
   }
 
+  returnToOrigin() {
+    this.position = [0, 0, 0];
+  }
+
   get x() {
     return -this.position[0];
   }

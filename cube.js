@@ -1,14 +1,8 @@
 class Cube {
   constructor({
-    x = 0,
-    y = 0,
-    z = 0,
-    pitch = 0,
-    yaw = 0,
-    roll = 0,
-    pitchSpeed = 0,
-    yawSpeed = 0,
-    rollSpeed = 0,
+    x = 0, y = 0, z = 0,
+    pitch = 0, yaw = 0, roll = 0,
+    pitchSpeed = 0, yawSpeed = 0, rollSpeed = 0,
   }) {
     this.position = [x, y, z];
     this.rotation = [pitch, yaw, roll];
